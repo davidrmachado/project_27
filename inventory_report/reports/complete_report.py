@@ -3,21 +3,19 @@ from collections import Counter
 
 
 class CompleteReport(SimpleReport):
-    @classmethod
-    def generate(cls, list):
-        simple_result = super().generate(list)
-        companies_list = []
-        companies = Counter(companies_list)
+    @staticmethod
+    def generate(products):
+        simple_result = SimpleReport.generate(products)
         string = ""
+        companies = Counter(
+            [product["nome_da_empresa"] for product in products]
+        ).most_common()
 
-        for product in list:
-            companies_list.append(product["nome_da_empresa"])
-
-        for company in companies.most_common():
+        for company in companies:
             string += f'- {company[0]}: {company[1]}\n'
 
         return (
             f"{simple_result}\n"
             f"Produtos estocados por empresa:\n"
-            f"{string}s"
+            f"{string}"
         )
